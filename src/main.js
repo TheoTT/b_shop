@@ -10,6 +10,12 @@ import axios from 'axios'
 axios.defaults.baseURL = 'http://192.168.3.5:5000'
 // axios.defaults.headers.post['Content-Type'] = 'application/json'
 // 将axios挂载至Vue原型对象， 所有组件都能通过this.$http访问
+// 增加权限验证
+axios.interceptors.request.use(config => {
+  config.headers.Authorization = 'JWT ' + window.sessionStorage.getItem('token')
+  console.log(config)
+  return config
+})
 Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
