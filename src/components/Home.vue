@@ -5,7 +5,7 @@
       <div>
           <img src="../assets/logo.png" alt="">
           <span>
-            电商后台管理系统
+            后台管理系统
           </span>
       </div>
       <el-button type='info' @click='logout'>Logout</el-button>
@@ -30,7 +30,7 @@
       :collapse="isCollapse"
       active-text-color="#409EFF">
       <!-- <el-submenu :index='item.id' v-for="item in menulist" :key="item.id"> -->
-      <el-submenu :index="item.path" v-for="item in menulist" :key="item.id">
+      <el-submenu :index="item.path" v-for="item in menulist_s" :key="item.id">
         <template slot="title">
             <!-- 以及菜单图标 -->
           <i :class="iconlist[item.id]"></i>
@@ -84,6 +84,14 @@ export default {
       activePath: ''
     }
   },
+  computed: {
+    menulist_s: function () {
+      // 过滤用于展示的一级菜单
+      return this.menulist.filter(function (menu) {
+        if (menu.level === 0) return menu
+      })
+    }
+  },
   methods: {
     logout () {
       window.sessionStorage.clear()
@@ -91,7 +99,7 @@ export default {
     },
     async getMenuList () {
       // 获取菜单列表
-      const ret = await this.$http.get('api/menus/')
+      const ret = await this.$http.get('api/menus_aside/')
       if (ret.status !== 200) return this.$message.error('获取失败')
       this.menulist = ret.data.items
       console.log(ret.data)
