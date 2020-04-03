@@ -43,6 +43,15 @@
           label="修改时间">
         </el-table-column>
       </el-table>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="queryinfo.page"
+      :page-sizes="[5, 10, 15, 20]"
+      :page-size="queryinfo.page_size"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
         </div>
         </el-card>
     </div>
@@ -57,6 +66,7 @@ export default {
         page_size: 10,
         order_by: ['created_at', 'id']
       },
+      total: 0,
       permissionlist: []
     }
   },
@@ -68,6 +78,16 @@ export default {
       this.permissionlist = ret.data.items
       this.total = ret.data.total
       console.log(ret.data)
+    },
+    handleSizeChange (size) {
+      console.log(size)
+      this.queryinfo.page_size = size
+      this.getPermissionList()
+    },
+    handleCurrentChange (page) {
+      console.log(page)
+      this.queryinfo.page = page
+      this.getPermissionList()
     }
   },
   created () {

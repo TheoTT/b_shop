@@ -9,7 +9,7 @@
         <div >
           <el-row :gutter="20">
               <el-col :span="4">
-                <el-button type="primary">添加角色</el-button>
+                <el-button type="primary" @click="showAddRoleDialog">添加角色</el-button>
               </el-col>
           </el-row>
       <el-table
@@ -65,20 +65,49 @@
               <el-tooltip class="item" effect="dark" content="分配权限" placement="top" :enterable="false">
                 <el-button type="warning" icon="el-icon-setting" size="mini" @click="showModRoleMenuDialog(scope.row)"></el-button>
               </el-tooltip>
-              <el-button type="danger" icon="el-icon-delete" size="mini" @click="delUser(scope.row.id)"></el-button>
+              <el-button type="danger" icon="el-icon-delete" size="mini" @click="delRole(scope.row.id)"></el-button>
             </div>
           </template>
         </el-table-column>
       </el-table>
         </div>
         </el-card>
+      <!-- 新建角色对话框 -->
+        <el-dialog title="新建角色" :visible.sync="addRoleVisible" width="50%" @close="addRoleDialogClose">
+          <el-form ref="addRoleFormRef" label-width="100px" class="add_form" :model="AddRoleForm" :rules='rules'>
+          <!-- 角色名 -->
+            <el-form-item label="角色名：" prop="role_name">
+              <!-- 使用elementui提供的图标 -->
+              <el-input prefix-icon="el-icon-user-solid" placeholder="角色名" v-model="AddRoleForm.role_name" :disabled="false"></el-input>
+            </el-form-item>
+            <!-- 角色描述 -->
+            <el-form-item label="描述：" prop="role_desc">
+              <!-- 使用elementui提供的图标 -->
+              <el-input prefix-icon="el-icon-receiving" placeholder="角色描述" v-model="AddRoleForm.role_desc"></el-input>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="addRoleVisible = false">取 消</el-button>
+            <el-button type="primary" @click="addRole">确 定</el-button>
+          </div>
+      </el-dialog>
       <!-- 修改角色对话框 -->
         <el-dialog title="修改角色" :visible.sync="modRoleVisible" width="50%" @close="modRoleDialogClose">
-          <el-form ref="ModFormRef" label-width="100px" class="mod_form" :model="ModRoleForm">
+          <el-form ref="ModRoleFormRef" label-width="100px" class="mod_form" :model="ModRoleForm" :rules='rules'>
+          <!-- 角色名 -->
+            <el-form-item label="角色名：" prop="role_name">
+              <!-- 使用elementui提供的图标 -->
+              <el-input prefix-icon="el-icon-user-solid" placeholder="角色名" v-model="ModRoleForm.role_name" :disabled="false"></el-input>
+            </el-form-item>
+            <!-- 邮箱 -->
+            <el-form-item label="描述：" prop="role_desc">
+              <!-- 使用elementui提供的图标 -->
+              <el-input prefix-icon="el-icon-receiving" placeholder="角色描述" v-model="ModRoleForm.role_desc"></el-input>
+            </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="modRoleVisible = false">取 消</el-button>
-            <el-button type="primary" @click="modUser">确 定</el-button>
+            <el-button type="primary" @click="modRole">确 定</el-button>
           </div>
       </el-dialog>
       <!-- 分配角色权限对话框 -->
@@ -114,9 +143,11 @@ export default {
         order_by: ['created_at', 'id']
       },
       total: 0,
+      addRoleVisible: false,
       modRoleVisible: false,
       modRoleMenuVisible: false,
       ModRoleForm: {},
+      AddRoleForm: {},
       menulist: [],
       // 树形控件的嵌套对象
       treeProps: {
@@ -124,7 +155,18 @@ export default {
         children: 'children' // 进行嵌套的对象
       },
       defaultKeys: [], // 默认选中的数组节点
-      currRole: {} // 当前选中进行操作的角色
+      currRole: {}, // 当前选中进行操作的角色
+      rules: {
+        // 表单验证规则
+        role_name: [
+          { required: true, message: '请输入角色名', trigger: 'blur' },
+          { min: 1, max: 15, message: '长度在 1 到 20 个字符', trigger: 'blur' }
+        ],
+        role_desc: [
+          { required: true, message: '请输入角色描述', trigger: 'blur' },
+          { min: 1, max: 200, message: '长度在 1 到 200 个字符', trigger: 'blur' }
+        ]
+      }
     }
   },
   methods: {
@@ -167,11 +209,33 @@ export default {
       this.menulist = ret.data.items
       console.log(ret.data)
     },
+    async getRole (roleId) {
+      // 获取角色
+      const ret = await this.$http.get(`api/roles/${roleId}/`)
+      if (ret.status !== 200) return this.$message.error('获取失败')
+      this.ModRoleForm = ret.data
+      console.log(ret.data)
+    },
+    async addRole () {
+      // 获取角色
+      const ret = await this.$http.post(`api/roles/`, this.AddRoleForm)
+      if (ret.status !== 201) return this.$message.error('新建失败')
+      this.$message.success('新建权限成功')
+      this.addRoleVisible = false
+      this.getRoleList()
+    },
+    addRoleDialogClose () {
+      this.addRoleVisible = false
+    },
+    showAddRoleDialog () {
+      this.addRoleVisible = true
+    },
     modRoleDialogClose () {
       this.modRoleVisible = false
     },
     showModRoleDialog (roleInfor) {
       // 获取role信息
+      this.getRole(roleInfor.id)
       this.modRoleVisible = true
     },
     modRoleMenuDialogClose () {
@@ -235,6 +299,33 @@ export default {
       this.$message.success('修改权限成功')
       this.getRoleList()
       this.modRoleMenuVisible = false
+    },
+    async modRole () {
+      const ret = await this.$http.put(`api/roles/${this.ModRoleForm.id}/`, {
+        role_name: this.ModRoleForm.role_name,
+        role_desc: this.ModRoleForm.role_desc,
+        menu_ids: this.ModRoleForm.menus
+      })
+      if (ret.status !== 200) return this.$message.error('修改权限失败')
+      this.$message.success('修改权限成功')
+      this.modRoleVisible = false
+      this.getRoleList()
+    },
+    async delRole (roleId) {
+      const confirm = await this.$confirm('此操作将永久删除该角色, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }
+      ).catch(err => {
+        return err
+      })
+      // 如果用户点击确认，返回confirm的值为"confirm",点击取消则返回"cancel"
+      if (confirm !== 'confirm') return this.$message.info('已取消删除操作')
+      const ret = await this.$http.delete(`api/roles/${roleId}/`)
+      if (ret.status !== 204) return this.$message.error('删除角色失败')
+      this.$message.info('删除角色成功')
+      this.getRoleList()
     }
   }
 
