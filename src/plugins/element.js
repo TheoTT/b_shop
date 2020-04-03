@@ -28,6 +28,8 @@ import {
   Tree,
   Select,
   Option,
+  Radio,
+  RadioGroup,
   Message,
   MessageBox
 } from 'element-ui'
@@ -63,6 +65,8 @@ Vue.use(Tag)
 Vue.use(Tree)
 Vue.use(Select)
 Vue.use(Option)
+Vue.use(Radio)
+Vue.use(RadioGroup)
 
 // 在调用 Vue.use 前，给 Message 添加 install 方法(这个东西导入有些不太清楚)
 Message.install = function (Vue, options) {
