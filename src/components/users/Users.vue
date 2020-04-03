@@ -61,6 +61,22 @@
                   </template>
                 </el-table-column>
                 <el-table-column
+                  label="角色">
+                  <template slot-scope="scope">
+                    <div>
+                      <el-select v-model="roleId" :placeholder="scope.row.role.role_name" @change="modUserRole(scope.row)">
+                        <el-option
+                          v-for="item in rolelist"
+                          :key="item.id"
+                          :label="item.role_name"
+                          :value="item.id"
+                          >
+                        </el-option>
+                      </el-select>
+                    </div>
+                  </template>
+                </el-table-column>
+                <el-table-column
                   width="180"
                   label="操作">
                   <!-- <template slot-scope="scope"> -->
@@ -174,7 +190,9 @@ export default {
       },
       AddUserForm: {},
       ModUserForm: {},
-      modVisible: false // 控制修改用户对话框的显示与隐藏
+      modVisible: false, // 控制修改用户对话框的显示与隐藏
+      rolelist: [],
+      roleId: ''
 
     }
   },
@@ -266,10 +284,29 @@ export default {
       if (ret.status !== 204) return this.$message.error('删除用户失败')
       this.$message.info('删除用户成功')
       this.getUserList()
+    },
+    async getRoleList () {
+      // 获取角色列表
+      const ret = await this.$http.get('api/roles/', { params: this.queryinfo })
+      if (ret.status !== 200) return this.$message.error('获取失败')
+      this.rolelist = ret.data.items
+      this.total = ret.data.total
+      console.log(ret.data)
+    },
+    async modUserRole (userInfor) {
+      // console.log(userInfor)
+      // TODO 修改为URL传参
+      const ret = await this.$http.put(`api/users/${userInfor.id}/role/`, {
+        role_id: this.roleId
+      })
+      if (ret.status !== 200) return this.$message.error('修改失败' + ret.status)
+      this.$message.success('用户修改成功')
+      this.getUserList()
     }
   },
   created () {
     this.getUserList()
+    this.getRoleList()
   }
 }
 </script>

@@ -24,6 +24,10 @@ import {
   Tooltip,
   Pagination,
   Dialog,
+  Tag,
+  Tree,
+  Select,
+  Option,
   Message,
   MessageBox
 } from 'element-ui'
@@ -55,6 +59,10 @@ Vue.use(Switch)
 Vue.use(Tooltip)
 Vue.use(Pagination)
 Vue.use(Dialog)
+Vue.use(Tag)
+Vue.use(Tree)
+Vue.use(Select)
+Vue.use(Option)
 
 // 在调用 Vue.use 前，给 Message 添加 install 方法(这个东西导入有些不太清楚)
 Message.install = function (Vue, options) {
