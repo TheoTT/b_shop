@@ -5,6 +5,9 @@ import './plugins/element.js'
 import './assets/css/global.css'
 import './assets/fonts/iconfont.css'
 import axios from 'axios'
+import TreeTable from 'vue-table-with-tree-grid'
+
+Vue.component('tree-table', TreeTable)
 
 axios.defaults.baseURL = 'http://10.10.10.105:5000'
 // axios.defaults.baseURL = 'http://192.168.3.5:5000'

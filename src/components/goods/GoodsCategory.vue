@@ -15,6 +15,9 @@
               </el-col>
           </el-row>
           <!-- 表格展示区域 -->
+          <tree-table :data="categorylist" :columns="columns">
+
+          </tree-table>
           <!-- 分页导航区域 -->
         </div>
       </el-card>
@@ -71,7 +74,17 @@ export default {
           { required: true, message: '请输入分类描述', trigger: 'blur' },
           { min: 1, max: 200, message: '长度在 1 到 200 个字符', trigger: 'blur' }
         ]
-      }
+      },
+      columns: [
+        {
+          label: '分类名称',
+          prop: 'category_name'
+        },
+        {
+          label: '分类描述',
+          prop: 'category_desc'
+        }
+      ]
     }
   },
   methods: {
