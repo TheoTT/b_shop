@@ -34,7 +34,7 @@
            <template slot="categoryOption" slot-scope="scope">
              <div>
               <el-button type="primary" icon="el-icon-setting" size="mini" @click="showModCategoryDialog(scope.row)">修改</el-button>
-              <el-button type="danger" icon="el-icon-delete" size="mini" @click="delUser(scope.row)">删除</el-button>
+              <el-button type="danger" icon="el-icon-delete" size="mini" @click="delCategory(scope.row)">删除</el-button>
              </div>
            </template>
           </tree-table>
@@ -217,6 +217,7 @@ export default {
       const ret = await this.$http.get('api/categories/', { params: this.queryinfo })
       if (ret.status !== 200) return this.$message.error('获取失败')
       this.categorylist = ret.data.items
+      this.total = ret.data.total
       console.log(ret.data)
     },
     async modCategory () {
@@ -226,8 +227,25 @@ export default {
       this.getCategoryList()
       this.modCategoryVisible = false
     },
+    async delCategory (categoryInfor) {
+      const confirm = await this.$confirm('此操作将永久删除该分类, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }
+      ).catch(err => {
+        return err
+      })
+      // 如果用户点击确认，返回confirm的值为"confirm",点击取消则返回"cancel"
+      if (confirm !== 'confirm') return this.$message.info('已取消删除操作')
+      const ret = await this.$http.delete(`api/categories/${categoryInfor.id}/`)
+      if (ret.status !== 204) return this.$message.error('删除分类失败')
+      this.$message.info('删除分类成功')
+      this.getCategoryList()
+    },
     handleChange () {
       console.log(this.parentids)
+      this.AddCategoryForm.parent_id = this.parentids[this.parentids.length - 1]
     },
     handleSizeChange (size) {
       console.log(size)

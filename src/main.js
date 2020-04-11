@@ -9,8 +9,8 @@ import TreeTable from 'vue-table-with-tree-grid'
 
 Vue.component('tree-table', TreeTable)
 
-// axios.defaults.baseURL = 'http://10.10.10.105:5000'
-axios.defaults.baseURL = 'http://127.0.0.1:5000'
+axios.defaults.baseURL = 'http://10.10.10.105:5000'
+// axios.defaults.baseURL = 'http://127.0.0.1:5000'
 // axios.defaults.baseURL = 'http://192.168.3.5:5000'
 // axios.defaults.headers.post['Content-Type'] = 'application/json'
 // 将axios挂载至Vue原型对象， 所有组件都能通过this.$http访问
