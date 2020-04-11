@@ -185,6 +185,10 @@ export default {
   methods: {
     addCategoryDialogClose () {
       this.addCategoryVisible = false
+      // 清空表单数据
+      this.$refs.addCategoryFormRef.resetFields()
+      // 清空选中的父级ID
+      this.parentids = ''
     },
     modCategoryDialogClose () {
       this.modCategoryVisible = false
