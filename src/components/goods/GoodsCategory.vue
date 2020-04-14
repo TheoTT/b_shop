@@ -75,7 +75,7 @@
               <el-cascader
                 v-model="parentids"
                 clearable
-                :options="parentlist"
+                :options="parentlist_s"
                 :props="cascaderProps"
                 @change="handleChange">
                 <!-- options 指定数据源 -->
@@ -270,6 +270,15 @@ export default {
       // 过滤用于展示的一级菜单
       return this.categorylist.filter(function (category) {
         if (category.category_level === 0) return category
+      })
+    },
+    parentlist_s: function () {
+      return this.parentlist.filter(function (category) {
+        console.log(category)
+        if (category.children_f.length === 0) {
+          delete category.children_f
+        }
+        return category
       })
     }
   }

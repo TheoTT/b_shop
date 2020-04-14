@@ -31,6 +31,9 @@ import {
   Radio,
   RadioGroup,
   Cascader,
+  Alert,
+  Tabs,
+  TabPane,
   Message,
   MessageBox
 } from 'element-ui'
@@ -69,6 +72,9 @@ Vue.use(Option)
 Vue.use(Radio)
 Vue.use(RadioGroup)
 Vue.use(Cascader)
+Vue.use(Alert)
+Vue.use(Tabs)
+Vue.use(TabPane)
 
 // 在调用 Vue.use 前，给 Message 添加 install 方法(这个东西导入有些不太清楚)
 Message.install = function (Vue, options) {

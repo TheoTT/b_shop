@@ -7,6 +7,7 @@ import Users from '../components/users/Users.vue'
 import Permissons from '../components/permissions/Permissions.vue'
 import Roles from '../components/permissions/Roles.vue'
 import GoodsCategory from '../components/goods/GoodsCategory.vue'
+import GoodsCategoryParams from '../components/goods/GoodsCategoryParams.vue'
 
 Vue.use(VueRouter)
 
@@ -51,6 +52,11 @@ const routes = [
         path: '/goods_category',
         name: 'GoodsCategory',
         component: GoodsCategory
+      },
+      {
+        path: '/goods_params',
+        name: 'GoodsCategoryParams',
+        component: GoodsCategoryParams
       }
     ]
   }
