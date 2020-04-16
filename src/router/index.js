@@ -6,6 +6,10 @@ import Welcome from '../components/Welcome.vue'
 import Users from '../components/users/Users.vue'
 import Permissons from '../components/permissions/Permissions.vue'
 import Roles from '../components/permissions/Roles.vue'
+import GoodsCategory from '../components/goods/GoodsCategory.vue'
+import GoodsCategoryParams from '../components/goods/GoodsCategoryParams.vue'
+import Goods from '../components/goods/Goods.vue'
+import GoodsAdd from '../components/goods/GoodsAdd.vue'
 
 Vue.use(VueRouter)
 
@@ -45,6 +49,26 @@ const routes = [
         path: '/roles',
         name: 'Roles',
         component: Roles
+      },
+      {
+        path: '/goods_category',
+        name: 'GoodsCategory',
+        component: GoodsCategory
+      },
+      {
+        path: '/goods_params',
+        name: 'GoodsCategoryParams',
+        component: GoodsCategoryParams
+      },
+      {
+        path: '/goods',
+        name: 'Goods',
+        component: Goods
+      },
+      {
+        path: '/goods/add',
+        name: 'GoodsAdd',
+        component: GoodsAdd
       }
     ]
   }
