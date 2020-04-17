@@ -218,7 +218,7 @@ export default {
     },
     async addRole () {
       // 获取角色
-      const ret = await this.$http.post(`api/roles/`, this.AddRoleForm)
+      const ret = await this.$http.post('api/roles/', this.AddRoleForm)
       if (ret.status !== 201) return this.$message.error('新建失败')
       this.$message.success('新建权限成功')
       this.addRoleVisible = false
