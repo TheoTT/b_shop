@@ -39,6 +39,8 @@ import {
   CheckboxGroup,
   Checkbox,
   Upload,
+  Timeline,
+  TimelineItem,
   Message,
   MessageBox
 } from 'element-ui'
@@ -85,6 +87,8 @@ Vue.use(Step)
 Vue.use(CheckboxGroup)
 Vue.use(Checkbox)
 Vue.use(Upload)
+Vue.use(Timeline)
+Vue.use(TimelineItem)
 
 // 在调用 Vue.use 前，给 Message 添加 install 方法(这个东西导入有些不太清楚)
 Message.install = function (Vue, options) {

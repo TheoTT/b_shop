@@ -10,7 +10,9 @@
           <div class="text item">
             <el-row :gutter="20">
               <el-col :span="8">
-                <el-input placeholder="请输入内容" class="input-with-select" v-model="queryinfor.keyword" clearable @clear='getGoods'>
+                <el-input
+                 placeholder="请输入内容" class="input-with-select"
+                 v-model="queryinfor.keyword" clearable @clear='getGoods'>
                   <el-button slot="append" icon="el-icon-search" @click="getGoods"></el-button>
                 </el-input>
               </el-col>
@@ -63,15 +65,16 @@
               </el-table-column>
             </el-table>
           <!-- 分页导航区域 -->
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="queryinfor.page"
-            :page-sizes="[5, 10, 15, 20]"
-            :page-size="queryinfor.page_size"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total">
-          </el-pagination>
+            <el-pagination
+              background
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="queryinfor.page"
+              :page-sizes="[5, 10, 15, 20]"
+              :page-size="queryinfor.page_size"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total">
+            </el-pagination>
           </div>
         </el-card>
     </div>
